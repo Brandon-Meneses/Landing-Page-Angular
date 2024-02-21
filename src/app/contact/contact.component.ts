@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { FormGroup } from '@angular/forms';
 
@@ -7,13 +7,25 @@ import { FormGroup } from '@angular/forms';
   templateUrl: './contact.component.html',
   styleUrls: ['./contact.component.css']
 })
-export class ContactComponent {
+export class ContactComponent implements OnInit{
   formularioContacto: FormGroup;
+  tipoDni: string = 'DNI';
+  
   constructor(private form: FormBuilder) {
     this.formularioContacto = this.form.group({
       nombre: ['',[Validators.required, Validators.minLength(3)]],
+      apellido: [''],
+      tipoDni: [''],
+      dni: [''], 
       email: ['',[Validators.required,Validators.email]]
     })
+
+  }
+  ngOnInit(): void {
+    this.formularioContacto.get('tipoDni')?.valueChanges.subscribe(value=> {
+      this.tipoDni = value;
+    }
+    );
 
   }
   hasErrors(controlName: string, errortype: string) {
